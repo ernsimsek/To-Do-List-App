@@ -21,7 +21,7 @@ The app focuses on clean UI, smooth animations, and practical task management fe
 ---
 
 <img width="1919" height="1079" alt="Ekran görüntüsü 2026-02-02 164659" src="https://github.com/user-attachments/assets/b9d4dd97-0168-4bdb-a30d-e6d9559efdf4" />
-Live Demo(https://ernsimsek.github.io/To-Do-List-App/)
+[Live Demo](https://ernsimsek.github.io/To-Do-List-App/)
 
 ---
 
