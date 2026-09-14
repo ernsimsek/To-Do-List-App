@@ -42,3 +42,5 @@ The project uses semantic HTML, modern CSS, and Vanilla JavaScript. Existing `ta
 3. Subtasks and task notes
 4. Import/export and cross-device synchronization
 5. Weekly productivity insights
+
+<img width="1917" height="867" alt="to-do-list-app" src="https://github.com/user-attachments/assets/27a55696-f958-407c-bc20-47efbda9e251" />
