@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileProgressValue: $('#mobile-progress-value'), mobileProgressBar: $('#mobile-progress-bar'),
         mobileOpenCount: $('#mobile-open-count'), mobileDoneCount: $('#mobile-done-count'), mobileOverdueCount: $('#mobile-overdue-count'),
         mobileNextTask: $('#mobile-next-task'), mobileNextTime: $('#mobile-next-time'),
-        mobileOpenComposer: $('#mobile-open-composer'), mobileModeToggle: $('#mobile-mode-toggle')
+        mobileOpenComposer: $('#mobile-open-composer'), mobileModeToggle: $('#mobile-mode-toggle'),
+        mobilePaletteToggle: $('#mobile-palette-toggle'), mobilePaletteMenu: $('#mobile-palette-menu'),
+        mobilePaletteClose: $('#mobile-palette-close')
     };
     const accents = {
         coral: { accent: '#ee7558', deep: '#c85238', soft: '#fae8e1', rgb: '238, 117, 88' },
@@ -209,7 +211,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.style.setProperty('--accent', theme.accent); document.documentElement.style.setProperty('--accent-deep', theme.deep);
         document.documentElement.style.setProperty('--accent-soft-light', theme.soft);
         document.documentElement.style.setProperty('--accent-rgb', theme.rgb);
-        $$('.palette-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.accent === name)); localStorage.setItem('luma-accent', name);
+        $$('.palette-dot').forEach(dot => {
+            const active = dot.dataset.accent === name;
+            dot.classList.toggle('active', active);
+            dot.setAttribute('aria-pressed', String(active));
+        });
+        el.mobilePaletteToggle.dataset.accent = name;
+        localStorage.setItem('luma-accent', name);
+    }
+    function toggleMobilePalette(forceOpen = null) {
+        const shouldOpen = forceOpen === null ? el.mobilePaletteMenu.hidden : forceOpen;
+        el.mobilePaletteMenu.hidden = !shouldOpen;
+        el.mobilePaletteToggle.setAttribute('aria-expanded', String(shouldOpen));
+        if (shouldOpen) requestAnimationFrame(() => $('.mobile-palette-dot.active', el.mobilePaletteMenu)?.focus());
     }
     function toggleTheme() {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -243,6 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     el.openComposer.addEventListener('click', () => toggleComposer());
     el.mobileOpenComposer.addEventListener('click', () => toggleComposer());
+    el.mobilePaletteToggle.addEventListener('click', () => toggleMobilePalette());
+    el.mobilePaletteClose.addEventListener('click', () => { toggleMobilePalette(false); el.mobilePaletteToggle.focus(); });
     el.addButton.addEventListener('click', addTask); el.taskInput.addEventListener('keydown', event => { if (event.key === 'Enter') addTask(); });
     el.taskList.addEventListener('click', event => {
         const control = event.target.closest('[data-action]');
@@ -276,8 +292,15 @@ document.addEventListener('DOMContentLoaded', () => {
     $$('.filter-btn').forEach(button => button.addEventListener('click', () => { currentFilter = button.dataset.filter; $$('.filter-btn').forEach(item => item.classList.toggle('active', item === button)); render(); }));
     $$('.priority-chip').forEach(button => button.addEventListener('click', () => { currentPriority = button.dataset.priority; $$('.priority-chip').forEach(item => item.classList.toggle('active', item === button)); }));
     $$('.quick-dates button').forEach(button => button.addEventListener('click', () => { const date = new Date(); if (button.dataset.quickDate === 'tomorrow') date.setDate(date.getDate() + 1); el.dateInput.value = localDate(date); }));
-    $$('.palette-dot').forEach(dot => dot.addEventListener('click', () => applyAccent(dot.dataset.accent)));
+    $$('.palette-dot').forEach(dot => dot.addEventListener('click', () => {
+        applyAccent(dot.dataset.accent);
+        if (dot.classList.contains('mobile-palette-dot')) { toggleMobilePalette(false); el.mobilePaletteToggle.focus(); }
+    }));
+    document.addEventListener('click', event => {
+        if (!el.mobilePaletteMenu.hidden && !event.target.closest('.mobile-brandbar')) toggleMobilePalette(false);
+    });
     document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !el.mobilePaletteMenu.hidden) { toggleMobilePalette(false); el.mobilePaletteToggle.focus(); }
         if (event.key === '/' && document.activeElement.tagName !== 'INPUT') { event.preventDefault(); el.searchInput.focus(); }
         if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') toggleComposer(true);
     });
