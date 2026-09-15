@@ -49,7 +49,23 @@
         <section class="workspace">
             <header class="mobile-brandbar">
                 <a href="#" aria-label="Luma home"><span>L</span><strong>luma</strong></a>
-                <button type="button" id="mobile-mode-toggle" aria-label="Switch to dark mode">◐</button>
+                <div class="mobile-brand-actions">
+                    <button type="button" id="mobile-palette-toggle" aria-label="Choose accent color" aria-expanded="false" aria-controls="mobile-palette-menu"><span class="mobile-palette-preview" aria-hidden="true"></span></button>
+                    <button type="button" id="mobile-mode-toggle" aria-label="Switch to dark mode">◐</button>
+                </div>
+                <section class="mobile-palette-menu" id="mobile-palette-menu" aria-label="Accent color" hidden>
+                    <div class="mobile-palette-heading">
+                        <div><strong>Color theme</strong><span>Make Luma feel like yours</span></div>
+                        <button type="button" id="mobile-palette-close" aria-label="Close color theme">×</button>
+                    </div>
+                    <div class="mobile-palette-options" role="group" aria-label="Choose accent color">
+                        <button class="palette-dot mobile-palette-dot active" data-accent="coral" aria-label="Coral theme"><span aria-hidden="true"></span><small>Coral</small></button>
+                        <button class="palette-dot mobile-palette-dot" data-accent="violet" aria-label="Violet theme"><span aria-hidden="true"></span><small>Violet</small></button>
+                        <button class="palette-dot mobile-palette-dot" data-accent="ocean" aria-label="Ocean theme"><span aria-hidden="true"></span><small>Ocean</small></button>
+                        <button class="palette-dot mobile-palette-dot" data-accent="sage" aria-label="Sage theme"><span aria-hidden="true"></span><small>Sage</small></button>
+                        <button class="palette-dot mobile-palette-dot" data-accent="amber" aria-label="Amber theme"><span aria-hidden="true"></span><small>Amber</small></button>
+                    </div>
+                </section>
             </header>
             <header class="topbar">
                 <div class="heading-group">
