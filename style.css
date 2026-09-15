@@ -246,7 +246,7 @@ h1 { margin: 0; font-size: clamp(34px, 3.5vw, 48px); font-weight: 760; letter-sp
 @media (max-width: 840px) {
     body { padding: 0 0 calc(86px + env(safe-area-inset-bottom)); }
     .app-shell { display: block; min-height: 100vh; overflow: visible; border: 0; border-radius: 0; }
-    .workspace { padding: 20px 18px 44px; }
+    .workspace { padding: calc(20px + env(safe-area-inset-top)) 18px 44px; }
     .sidebar { display: none; }
     .brand, .nav-label, .sidebar-note, .sidebar-footer { display: none; }
     .nav-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
@@ -259,11 +259,32 @@ h1 { margin: 0; font-size: clamp(34px, 3.5vw, 48px); font-weight: 760; letter-sp
     [data-theme="dark"] .sidebar-cta { color: #fff; background: var(--accent); }
     .sidebar-cta > span:first-child { color: #fff; font-size: 25px; }
     .sidebar-cta .cta-label, .sidebar-cta kbd { display: none; }
-    .mobile-brandbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+    .mobile-brandbar { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
     .mobile-brandbar a { display: flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; }
     .mobile-brandbar a span { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 10px 10px 10px 4px; color: #fff; background: var(--accent); box-shadow: 0 7px 16px rgba(var(--accent-rgb), .24); font-size: 14px; font-weight: 760; }
     .mobile-brandbar a strong { font-size: 17px; letter-spacing: -.6px; }
-    .mobile-brandbar button { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: var(--surface); }
+    .mobile-brand-actions { display: flex; align-items: center; gap: 7px; }
+    .mobile-brandbar .mobile-brand-actions > button { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: var(--surface); cursor: pointer; }
+    .mobile-brandbar .mobile-brand-actions > button[aria-expanded="true"] { border-color: rgba(var(--accent-rgb), .42); background: var(--accent-soft); }
+    .mobile-palette-preview { width: 15px; height: 15px; border: 4px solid var(--surface-raised); border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px rgba(var(--accent-rgb), .55), 7px 0 0 -4px var(--accent-deep); }
+    .mobile-palette-menu { position: absolute; top: 47px; right: 0; z-index: 12; width: min(310px, calc(100vw - 36px)); padding: 15px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface-raised), transparent 2%); box-shadow: 0 20px 50px rgba(25, 22, 18, .2); backdrop-filter: blur(22px); animation: fade-up .24s var(--ease); }
+    .mobile-palette-menu[hidden] { display: none; }
+    .mobile-palette-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+    .mobile-palette-heading > div { display: grid; gap: 3px; }
+    .mobile-palette-heading strong { font-size: 13px; }
+    .mobile-palette-heading span { color: var(--muted); font-size: 9px; }
+    .mobile-brandbar .mobile-palette-heading button { display: grid; width: 28px; height: 28px; padding: 0; place-items: center; border: 0; border-radius: 9px; color: var(--muted); background: var(--sidebar); font-size: 18px; cursor: pointer; }
+    .mobile-palette-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+    .mobile-palette-options .mobile-palette-dot { display: flex; width: auto; height: 58px; padding: 7px 2px 6px; border: 1px solid transparent; border-radius: 12px; align-items: center; justify-content: center; flex-direction: column; gap: 6px; color: var(--muted); background: transparent; box-shadow: none; transform: none; }
+    .mobile-palette-dot > span { width: 19px; height: 19px; border-radius: 50%; background: currentColor; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06); }
+    .mobile-palette-dot[data-accent="coral"] { color: #ee7558; }
+    .mobile-palette-dot[data-accent="violet"] { color: #7c6ce7; }
+    .mobile-palette-dot[data-accent="ocean"] { color: #208f9b; }
+    .mobile-palette-dot[data-accent="sage"] { color: #6fa889; }
+    .mobile-palette-dot[data-accent="amber"] { color: #d89b45; }
+    .mobile-palette-dot small { color: var(--muted); font-size: 7px; font-weight: 650; }
+    .mobile-palette-options .mobile-palette-dot.active { border-color: rgba(var(--accent-rgb), .32); background: var(--accent-soft); }
+    .mobile-palette-options .mobile-palette-dot.active > span { box-shadow: 0 0 0 3px var(--surface-raised), 0 0 0 5px currentColor; transform: scale(.75); }
     .topbar { position: relative; align-items: center; margin-bottom: 18px; }
     .page-subtitle { display: none; }
     .search-box { width: 44px; min-height: 44px; }
@@ -313,7 +334,7 @@ h1 { margin: 0; font-size: clamp(34px, 3.5vw, 48px); font-weight: 760; letter-sp
 }
 
 @media (max-width: 560px) {
-    .workspace { padding: 27px 16px 40px; }
+    .workspace { padding: calc(27px + env(safe-area-inset-top)) 16px 40px; }
     h1 { font-size: 34px; letter-spacing: -1.8px; }
     .topbar { margin-bottom: 17px; }
     .mobile-overview { padding: 15px; border-radius: 17px; }
@@ -330,7 +351,8 @@ h1 { margin: 0; font-size: clamp(34px, 3.5vw, 48px); font-weight: 760; letter-sp
     .priority-chip { flex: 1; justify-content: center; }
     .list-toolbar { align-items: flex-start; }
     .toolbar-actions { align-items: flex-end; flex-direction: column; gap: 2px; }
-    .sort-control > span, .text-button { display: none; }
+    .sort-control > span { display: none; }
+    #clear-completed { min-height: 25px; padding: 3px 1px; font-size: 8px; }
     .task { gap: 9px; padding-inline: 10px; }
     .task-actions { gap: 0; }
     .task-action { width: 35px; }
@@ -339,7 +361,7 @@ h1 { margin: 0; font-size: clamp(34px, 3.5vw, 48px); font-weight: 760; letter-sp
 
 @media (max-width: 360px) {
     .filter-btn { min-width: 46px; padding-inline: 7px; }
-    .task-action.edit { display: none; }
+    .task-action { width: 32px; }
 }
 
 @media (hover: none) {
